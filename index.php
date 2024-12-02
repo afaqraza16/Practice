@@ -3,6 +3,7 @@
 require_once __DIR__ . '/vendor/autoload.php';
 use App\Controllers\ArticleController;
 use App\Controllers\NewController;
+use Framework\Dispatcher;
 use Framework\Router;
 
 $url = parse_url($_SERVER['REQUEST_URI'],PHP_URL_PATH);
@@ -13,28 +14,20 @@ $url_pieces = explode("/",$_SERVER['REQUEST_URI']);
 // require "src/Router.php";
 
 $router = new Router;
-$router->addToRoutes("{controller}/{action}");
+$router->addToRoutes("/{controller}/{action}");
+$router->addToRoutes("/node/{slug:\d+}",["controller"=>"node","action"=>"display"]);
+$router->addToRoutes("/product/{slug:\d+}",["controller"=>"product","action"=>"display"]);
+$router->addToRoutes("/drupak/pakistan/wah",['controller'=>'drupak',"action"=>"details"]);
+$router->addToRoutes("/{controller}/{id:\w+}/{action}");
 // $router->addToRoutes("/regax",['controller'=>"regax","action"=>"match"]);
-// $router->addToRoutes("/drupak/pakistan/wah",['controller'=>'drupak',"action"=>"details"]);
 // $router->addToRoutes("/drupak/pakistan/history",['controller'=>'drupak',"action"=>"history"]);
 // $router->addToRoutes("/sports/cricket",['controller'=>'sports',"action"=>"cricket"]);
- if($detail = $router->match($url)){
-    dump($detail);
-     $namespace = "App\\Controllers\\";
-    // require_once "$namespace". ucfirst($detail['controller']).".php";
-    $controller = $namespace.ucfirst($detail['controller']);
-    $action = $detail['action'];
-    $class = new $controller;
-    $class->$action();
 
- }
- else{
-    dump("Route Not Found");
- }
 
 // dump($router->routes);
 
-
+$dispatcher = new Dispatcher($router);
+$dispatcher->handleUrl($url);
 
 
 // $controller = $url_pieces[1];

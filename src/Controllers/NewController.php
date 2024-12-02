@@ -2,13 +2,18 @@
 
 namespace App\Controllers;
 use App\Models\NewsModel;
+use Framework\Viewer;
 
 class NewController{
+    public Viewer $viewer;
+    public function __construct(Viewer $viewer)
+    {
+        $this->viewer = $viewer;
+    }
     public function show(){
-        require "src/Model/NewsModel.php";
         $newsModel = new NewsModel;
         $news = $newsModel->runQuery();
-        require "View/NewsView.php";
+       print  $this->viewer->render("NewsView" , ['news' => $news]);
 
     }
 }
