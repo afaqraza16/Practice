@@ -2,32 +2,32 @@
 
 namespace Framework;
 
+use App\Database;
+use App\Models\NewsModel;
+use ReflectionClass;
 use ReflectionMethod;
 
 class Dispatcher{
     private Router $router;
-    public function __construct(Router $router)
+    private Container $container;
+    public function __construct(Router $router, Container $container)
     {
         $this->router = $router;
+        $this->container  = $container;
     }
-
     public function handleUrl($url){
         if($detail = $this->router->match($url)){
+            // dump($detail);
             $namespace = "App\\Controllers\\";
-            dump($detail);
-           // require_once "$namespace". ucfirst($detail['controller']).".php";
-        //    $controller = $namespace.ucfirst($detail['controller']);
-
            $classname = ucwords($detail['controller'],"-");
            $classname = str_replace("-","",$classname);
-           $controller = $namespace.$classname;
-
+           $controller = $namespace . $classname;
            $action = $detail['action'];
            $action = ucwords($detail['action'],'-');
            $action = str_replace("-","",$action);
            $action = lcfirst($action);
-           $viewer = new Viewer;
-           $class = new $controller($viewer);
+           $class = $this->container->get($controller);
+           dump($class);
            $reflectionMethod = new ReflectionMethod($controller,$action);
            $parameters = $reflectionMethod->getParameters();
            $paramArray = [];
@@ -35,10 +35,10 @@ class Dispatcher{
             $paramArray[$param->getName()]= $detail[$param->getName()];
            }
            $class->$action(...$paramArray);
-       
         }
         else{
            dump("Route Not Found");
         }
     }
+ 
 }

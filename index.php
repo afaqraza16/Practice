@@ -3,6 +3,8 @@
 require_once __DIR__ . '/vendor/autoload.php';
 use App\Controllers\ArticleController;
 use App\Controllers\NewController;
+use App\Database;
+use Framework\Container;
 use Framework\Dispatcher;
 use Framework\Router;
 
@@ -25,8 +27,11 @@ $router->addToRoutes("/{controller}/{id:\w+}/{action}");
 
 
 // dump($router->routes);
-
-$dispatcher = new Dispatcher($router);
+$container = new Container;
+$db = new Database('db','db','db','db');
+// dd($db::class);
+$container->set($db::class,$db);
+$dispatcher = new Dispatcher($router,$container);
 $dispatcher->handleUrl($url);
 
 

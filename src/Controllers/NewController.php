@@ -6,13 +6,14 @@ use Framework\Viewer;
 
 class NewController{
     public Viewer $viewer;
-    public function __construct(Viewer $viewer)
+    private NewsModel $newsModel;
+    public function __construct(Viewer $viewer,NewsModel $newsModel)
     {
         $this->viewer = $viewer;
+        $this->newsModel = $newsModel;
     }
     public function show(){
-        $newsModel = new NewsModel;
-        $news = $newsModel->runQuery();
+        $news = $this->newsModel->runQuery();
        print  $this->viewer->render("NewsView" , ['news' => $news]);
 
     }

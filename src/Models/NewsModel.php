@@ -1,12 +1,17 @@
 <?php
 namespace App\Models;
+
+use App\Database;
 use PDO;
 class NewsModel{
-    public function runQuery(){
-        $dsn = "mysql:host=db;dbname=db;charset=utf8;";
-$pdo = new PDO($dsn,"db","db");
+    public function __construct(private  Database $db)
+    {
+    }
 
-$stmt = $pdo->query("select * from news");
-return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    public function runQuery(){
+        $pdo = $this->db->getConnection();
+        dump($pdo);
+        $stmt = $pdo->query("select * from news");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

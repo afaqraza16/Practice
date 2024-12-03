@@ -11,6 +11,8 @@ class StudentName{
         $this->viewer = $viewer;
     }
  public function displayName($id){
+  print  $this->viewer->render("partials/header",["title"=>"StudentName"]);
   print  $this->viewer->render("StudentName/name",["id"=>$id]);
+  print  $this->viewer->render("partials/footer");
  }   
 }
