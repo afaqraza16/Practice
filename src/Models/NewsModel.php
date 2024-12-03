@@ -10,7 +10,7 @@ class NewsModel{
 
     public function runQuery(){
         $pdo = $this->db->getConnection();
-        dump($pdo);
+        // dump($pdo);
         $stmt = $pdo->query("select * from news");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }

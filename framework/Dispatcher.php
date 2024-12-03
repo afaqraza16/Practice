@@ -27,7 +27,7 @@ class Dispatcher{
            $action = str_replace("-","",$action);
            $action = lcfirst($action);
            $class = $this->container->get($controller);
-           dump($class);
+        //    dump($class);
            $reflectionMethod = new ReflectionMethod($controller,$action);
            $parameters = $reflectionMethod->getParameters();
            $paramArray = [];
