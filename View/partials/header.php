@@ -8,3 +8,4 @@
 </head>
 
 <body>
+    <h1>You are currently in the <?php print $_ENV['SITE_NAME'] ?></h1>
